@@ -1,0 +1,59 @@
+/* Continuity diagram: reference styling, with the approved project copy. */
+.network-interactive {
+  overflow: hidden;
+  padding: 38px 24px 22px;
+  border: 1px solid #1689b8;
+  background: radial-gradient(ellipse at 50% 48%, #063653 0%, #0a2034 52%, #081726 100%);
+  box-shadow: 0 22px 65px #0004, inset 0 0 45px #008ed00d;
+}
+.network-interactive::before, .network-interactive::after {
+  content: ''; position: absolute; border: 1px solid #16c8f226; border-radius: 50%; pointer-events: none;
+  width: 270px; height: 270px; right: -95px; top: -140px;
+}
+.network-interactive::after { width: 200px; height: 200px; right: -60px; top: -105px; }
+.network-map { position: relative; isolation: isolate; display: grid; gap: 48px; }
+.network-interactive .network-inputs { gap: 24px; }
+.network-interactive .network-node {
+  flex: 1; min-width: 0; padding: 20px 10px; text-align: center;
+  border: 1px solid #168fc7; background: linear-gradient(145deg, #0a2b45, #081b2d);
+  box-shadow: 0 7px 24px #0003, inset 0 0 18px #00baff08;
+}
+.network-interactive .network-node strong { font: 700 15px/1.4 'Manrope', sans-serif; }
+.network-interactive .network-node small { color: #b6c7e5; font-size: 13px; line-height: 1.5; }
+.network-interactive .network-center {
+  position: relative; margin: 0 auto; width: 76%; padding: 24px 14px; border: 1px solid #00dcff;
+  background: linear-gradient(145deg, #063a5b, #071c33);
+  box-shadow: 0 0 0 4px #00cfff0b, 0 0 30px #00cfff2b, inset 0 0 24px #00cfff12;
+}
+.network-interactive .network-center::before { content: '✳'; display: block; color: var(--cyan); font-size: 28px; line-height: 1; margin-bottom: 12px; animation: network-pulse 3s ease-in-out infinite; }
+.network-interactive .network-center h3 { font-size: 21px; }
+.network-interactive .network-center small { display: block; color: #b6c7e5; font-size: 13px; }
+.network-interactive .network-outputs { gap: 10px; }
+.network-interactive .network-outputs span { display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 80px; padding: 14px 8px; color: #8fe8f1; font-weight: 700; background: #122b3d; border: 1px solid #ffffff0a; }
+.network-interactive .network-node, .network-interactive .network-center, .network-interactive .network-outputs span { z-index: 1; transition: transform .25s, border-color .25s, box-shadow .25s; }
+@media (hover: hover) {
+  .network-interactive :is(.network-node, .network-center, .network-outputs span):hover { transform: translateY(-3px); border-color: #8cfaff; box-shadow: 0 0 24px #00cfff44; }
+}
+.network-wires { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: -1; }
+.network-wires path { fill: none; stroke: #2edcff; stroke-width: 1.5; stroke-dasharray: 5 7; filter: drop-shadow(0 0 3px #00cfff); animation: network-flow 2s linear infinite; }
+.network-orbit { position: absolute; width: 270px; height: 270px; left: 50%; top: 50%; transform: translate(-50%, -50%); border: 1px solid #13b9f526; border-radius: 50%; pointer-events: none; z-index: -1; }
+.network-orbit::after { content: ''; position: absolute; inset: 25px; border: 1px dashed #13b9f526; border-radius: 50%; animation: network-orbit 35s linear infinite; }
+.network-interactive .diagram-caption { position: relative; margin-top: 22px; font-size: 12px; line-height: 1.6; text-align: center; }
+@keyframes network-flow { to { stroke-dashoffset: -24; } }
+@keyframes network-orbit { to { transform: rotate(360deg); } }
+@keyframes network-pulse { 50% { text-shadow: 0 0 18px #00cfff; } }
+@media (max-width: 480px) {
+  .network-interactive { padding: 28px 14px 18px; }
+  .network-interactive .network-inputs { gap: 12px; }
+  .network-interactive .network-node { padding: 16px 8px; }
+  .network-interactive .network-node strong { font-size: 13px; }
+  .network-interactive .network-node small { font-size: 12px; }
+  .network-interactive .network-center { width: 90%; }
+  .network-interactive .network-center h3 { font-size: 19px; }
+  .network-interactive .network-outputs { gap: 6px; }
+  .network-interactive .network-outputs span { font-size: 12px; padding: 12px 5px; }
+  .network-map { gap: 36px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .network-interactive *, .network-interactive *::before, .network-interactive *::after { animation: none !important; transition: none !important; }
+}

@@ -22,6 +22,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="network-diagram.css">
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -73,6 +74,7 @@
     <script src="assets/vendor/tsparticles.slim.bundle.min.js" defer></script>
     <script src="hero-particles.js" defer></script>
     <script src="interect.js" defer></script>
+    <script src="network-diagram.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
@@ -315,8 +317,10 @@ Infraestrutura e manutenção planejadas</p>
                 </li>
               </ul>
             </div>
-            <div class="network-diagram">
-              <img class="network-routes" src="assets/figma/12-177-imgRotasDaRede.svg" alt="" loading="lazy" decoding="async">
+            <div class="network-diagram network-interactive">
+              <div class="network-map">
+              <div class="network-orbit" aria-hidden="true"></div>
+              <svg class="network-wires" aria-hidden="true"><path/><path/><path/><path/><path/></svg>
               <div class="network-inputs">
                 <div class="network-node">
                   <strong class="" data-figma-text="12:210">Link principal</strong>
@@ -335,6 +339,7 @@ Infraestrutura e manutenção planejadas</p>
                 <span class="" data-figma-text="12:227">Sistemas críticos</span>
                 <span class="" data-figma-text="12:231">Equipes</span>
                 <span class="" data-figma-text="12:235">Visitantes</span>
+              </div>
               </div>
               <p class="diagram-caption" data-figma-text="12:238">Arquitetura ilustrativa. A configuração depende do projeto.</p>
             </div>
