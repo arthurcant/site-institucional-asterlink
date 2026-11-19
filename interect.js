@@ -24,19 +24,77 @@
     if (!event.target.closest('.site-header')) closeMenu();
   });
 
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const carousel = document.querySelector('.technology-carousel');
   if (carousel) {
     const track = carousel.querySelector('.technology-track');
     const status = carousel.querySelector('.carousel-status');
-    // Reorder only on an explicit arrow click; there is no autoplay timer.
-    const move = (direction) => {
-      if (direction === 1) track.append(track.firstElementChild);
-      else track.prepend(track.lastElementChild);
-      status.textContent = `Tecnologia em destaque: ${track.firstElementChild.querySelector('h3').textContent}`;
+    let moving = false;
+    // Advance only on an arrow click, including the seamless wraparound.
+    const move = async (direction) => {
+      if (moving) return;
+      moving = true;
+      const card = direction === 1 ? track.firstElementChild : track.lastElementChild;
+      let clone;
+      let animation;
+      try {
+        if (!reducedMotion.matches) {
+          const step = track.firstElementChild.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap);
+          clone = card.cloneNode(true);
+          clone.setAttribute('aria-hidden', 'true');
+          clone.inert = true;
+          clone.removeAttribute('id');
+          clone.querySelectorAll('[id]').forEach((node) => node.removeAttribute('id'));
+          if (direction === 1) track.append(clone);
+          else track.prepend(clone);
+          animation = track.animate([
+            { transform: `translateX(${direction === 1 ? 0 : -step}px)` },
+            { transform: `translateX(${direction === 1 ? -step : 0}px)` },
+          ], { duration: 360, easing: 'cubic-bezier(.22, .61, .36, 1)', fill: 'forwards' });
+          await animation.finished;
+        }
+      } finally {
+        clone?.remove();
+        if (direction === 1) track.append(card);
+        else track.prepend(card);
+        animation?.cancel();
+        moving = false;
+        status.textContent = `Tecnologia em destaque: ${track.firstElementChild.querySelector('h3').textContent}`;
+      }
     };
     carousel.querySelector('.previous').addEventListener('click', () => move(-1));
     carousel.querySelector('.next').addEventListener('click', () => move(1));
   }
+
+  document.querySelectorAll('.faq-item').forEach((item) => {
+    const summary = item.querySelector('summary');
+    let animation;
+    let expanded = item.open;
+    summary.addEventListener('click', (event) => {
+      event.preventDefault();
+      expanded = !expanded;
+      const from = item.getBoundingClientRect().height;
+      animation?.cancel();
+      item.style.height = '';
+      item.style.overflow = '';
+      if (reducedMotion.matches) {
+        item.open = expanded;
+        return;
+      }
+      item.open = true;
+      const to = expanded ? item.getBoundingClientRect().height : summary.getBoundingClientRect().height;
+      item.style.overflow = 'hidden';
+      animation = item.animate([{ height: `${from}px` }, { height: `${to}px` }], {
+        duration: 280,
+        easing: 'cubic-bezier(.22, .61, .36, 1)',
+      });
+      animation.onfinish = () => {
+        item.open = expanded;
+        item.style.overflow = '';
+        animation = null;
+      };
+    });
+  });
 
   const form = document.getElementById('contact-form');
   if (!form) return;
