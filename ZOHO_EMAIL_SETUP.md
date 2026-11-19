@@ -21,7 +21,7 @@ Sempre prefira os dados exibidos dentro da própria conta, pois o host pode vari
 
 ## 2. Configurar o projeto
 
-Na raiz do projeto, copie `.env.example` para `.env` e substitua os valores:
+O backend local está na pasta vizinha `../backend-contato`. A API da Vercel está em `../nodejs-serverless-function-express`. Configure o `.env` do backend usado e, na Vercel, as mesmas variáveis em Environment Variables:
 
 ```env
 PORT=3000
@@ -41,7 +41,7 @@ Não publique nem envie o arquivo `.env`. Ele já está ignorado pelo Git.
 
 ## 3. Executar
 
-Dentro de `backend-contato`:
+Dentro de `../backend-contato`:
 
 ```powershell
 npm install
@@ -49,7 +49,11 @@ npm run check
 npm start
 ```
 
-O formulário continuará enviando para `http://localhost:3000/api/contato`. Para confirmar que o backend está ativo, acesse `http://localhost:3000/api/saude`.
+O atributo `action` do formulário em `index.html` aponta para a API existente na Vercel. Para testar com o backend local, use `http://localhost:3000/api/contato` nesse atributo. A rota de saúde local é `http://localhost:3000/api/saude`.
+
+O novo formulário envia `nome`, `empresa`, `email`, `telefone`, `cidade`, `prazo`, `tipoSolucao` e `mensagemOriginal`, com `versaoFormulario: 2`. Os campos legados `tipodeplano` e `mensagem` também são enviados, incluindo empresa e prazo no corpo da mensagem para compatibilidade com a API já publicada. O servidor atualizado apresenta os novos campos separadamente no e-mail. Os payloads antigos continuam aceitos.
+
+Publique as alterações de `../nodejs-serverless-function-express/api/server.js` para atualizar a API da Vercel. O destino do e-mail continua definido exclusivamente por `ZOHO_MAIL_TO` no servidor.
 
 ## 4. Solução de problemas
 

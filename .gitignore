@@ -1,0 +1,4 @@
+.env
+backend-contato/.env
+node_modules/
+backend-contato/node_modules/
